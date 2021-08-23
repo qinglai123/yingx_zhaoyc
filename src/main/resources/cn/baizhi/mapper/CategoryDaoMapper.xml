@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.baizhi.dao.CategoryDao">
+    <!-- //根据级别 查询类别
+    List<Category> selectByLevels(int levels);-->
+    <sql id="all">
+      select id,cateName,levels,parentId from yx_category
+    </sql>
+    <select id="selectByLevels" parameterType="Integer" resultType="Category">
+      <include refid="all"/> where levels =#{levels}
+    </select>
+    <!--//根据1级类别id查询2级类别
+    List<Category> selectByParentId (String id);-->
+    <select id="selectByParentId" resultType="Category" parameterType="String">
+        <include refid="all"/> where parentId=#{id}
+    </select>
+    <!--  //根据父项添加2级类别
+    void add(Category category);-->
+    <insert id="add" parameterType="Category">
+        insert into yx_category values (#{id},#{cateName},#{levels},#{parentId})
+    </insert>
+    <!--//根据id删除类别
+    void dropById(String id);-->
+    <delete id="dropById" parameterType="String">
+        delete from yx_category where id=#{id}
+    </delete>
+
+    <!-- //修改二级类别
+    void update(Category category);-->
+    <update id="update" parameterType="Category">
+        update yx_category set cateName=#{cateName}
+        where id=#{id}
+    </update>
+
+</mapper>

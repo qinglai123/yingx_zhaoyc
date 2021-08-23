@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.baizhi.dao.UserDao">
+    <!--    List<User> queyRange(int start,int end);
+-->
+    <sql id="all">
+        select id,username,phone,headimg,wechat,status,brief,creatdate from yx_user
+    </sql>
+    <select id="queyRange" resultType="User">
+      <include refid="all"/> limit #{start},#{end}
+    </select>
+
+
+    <!--int selectCount(); -->
+    <select id="selectCount" resultType="Integer">
+        select count(*) from yx_user
+    </select>
+
+
+    <!--根据id修改状态    void updateStatus(String id,Integer status);-->
+    <update id="updateStatus" parameterType="User">
+        update yx_user set status=#{status} where id=#{id}
+    </update>
+
+
+    <!--  //添加用户 这里添加要和数据库顺序一致
+    void insert(User user);-->
+    <insert id="insert" parameterType="User">
+        insert into yx_user (id,phone,username,headimg,brief,wechat,creatdate,status) values (#{id},#{phone},#{username},#{headimg},#{brief},#{wechat},#{creatdate},#{status})
+    </insert>
+
+
+    <!--//根据id删除
+    void deleteById(String id);-->
+    <delete id="deleteById" parameterType="String">
+        delete from yx_user where id=#{id}
+    </delete>
+    <!-- List<User> findAll();-->
+    <select id="findAll" resultType="User">
+        <include refid="all"/>
+    </select>
+
+
+    <!--  //查男生人数和月份
+    List<MonthAndCount> selectMan();
+    -->
+    <select id="selectMan" resultType="cn.baizhi.vo.MonthAndCount" parameterType="String">
+      select month(creatdate) month,count(*) count from yx_user where sex = #{sex}
+      group by month(creatdate)
+    </select>
+
+
+
+
+
+
+
+</mapper>
