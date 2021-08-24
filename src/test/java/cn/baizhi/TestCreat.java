@@ -34,6 +34,7 @@ public class TestCreat {
 
         // 关闭OSSClient。
         ossClient.shutdown();
+        sout;
     }
 
 
